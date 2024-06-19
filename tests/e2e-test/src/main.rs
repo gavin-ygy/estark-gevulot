@@ -8,7 +8,7 @@ use gevulot_node::{
     },
 };
 use libsecp256k1::SecretKey;
-use server::FileServer;
+
 use std::{
     net::SocketAddr,
     path::{Path, PathBuf},
@@ -17,7 +17,7 @@ use std::{
 };
 use tokio::time::sleep;
 
-mod server;
+
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
