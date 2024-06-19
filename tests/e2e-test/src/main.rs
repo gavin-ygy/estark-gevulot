@@ -74,7 +74,7 @@ async fn main() -> Result<()> {
     //let client = RpcClientBuilder::default().build(cfg.json_rpc_url)?;
 
     let mut client_builder = RpcClientBuilder::default();
-    if let Some(rpc_timeout) = args.rpc_timeout {
+    if let Some(rpc_timeout) = cfg.rpc_timeout {
         client_builder = client_builder.request_timeout(Duration::from_secs(rpc_timeout));
     }
     let client = client_builder
