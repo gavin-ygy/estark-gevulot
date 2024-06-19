@@ -64,6 +64,8 @@ pub struct ArgConfiguration {
     ///]'
     #[clap(short, long, value_name = "TASK ARRAY")]
     tasks: String,
+    #[clap(long = "rpctimeout", value_name = "RPC TIMEOUT")]
+    rpc_timeout: Option<u64>,
 }
 
 #[tokio::main]
