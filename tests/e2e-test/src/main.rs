@@ -7,6 +7,10 @@ use gevulot_node::{
         Hash, Transaction,
     },
 };
+
+//
+use gevulot_cli::run_exec_command;
+
 use libsecp256k1::SecretKey;
 
 use std::{
@@ -24,16 +28,42 @@ type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 #[derive(Parser, Debug)]
 #[clap(author = "Gevulot Team", version, about, long_about = None)]
 pub struct ArgConfiguration {
-    #[clap(short, long)]
-    pub prover_img: PathBuf,
-    #[clap(short, long)]
-    pub verifier_img: PathBuf,
+
     #[clap(short, long, default_value = "http://localhost:9944")]
     pub json_rpc_url: String,
     #[clap(short, long, default_value = "localkey.pki")]
     pub key_file: PathBuf,
-    #[clap(short, long, default_value = "127.0.0.1:0")]
-    pub listen_addr: SocketAddr,
+    
+    /// Optional Address of the local http server use by the node to download input file.
+    #[clap(
+        short,
+        long,
+        default_value = "127.0.0.1:8080",
+        value_name = "LOCAL SERVER BIND ADDR"
+    )]
+    listen_addr: Option<SocketAddr>,
+    /// array of Json task definition.
+    /// Json format of the task data:
+    /// [{
+    ///     program: "Program Hash",
+    ///     cmd_args: [ {name: "args name", value:"args value"}, ...],
+    ///     inputs: [
+    ///         {"Input":{"local_path":"<Path to the local file>","vm_path":"<path to read the file in the VM", "file_url":"<Optional file url if not local. In this case local_path contains the file checksum"},
+    ///         {"Output":{"source_program":"Program Hash","file_name":"<file path where the file is written in the VM"}}],
+    ///     , ...
+    /// }]
+    /// Example for proving and verification:
+    /// --tasks '[
+    /// {"program":"9616d42b0d82c1ed06eab8eaa26680261ad831012bbf3ad8303738a53bf85c7c","cmd_args":[{"name":"--nonce","value":"42"}],"inputs":[{"Input":{"local_path":"witness.txt","vm_path":"/workspace/witness.txt"}}]}
+    ///,
+    ///{
+    /// "program":"37ef718f473a96e2dd56ac27fc175bfa08f4a30e34bdff5802e2f5071265a942",
+    /// "cmd_args":[{"name":"--nonce2","value":"45"},{"name":"--nonce3","value":"46"}]
+    ///,"inputs":[{"Output":{"source_program":"9616d42b0d82c1ed06eab8eaa26680261ad831012bbf3ad8303738a53bf85c7c","file_name":"/workspace/proof.dat"}}]
+    /// }
+    ///]'
+    #[clap(short, long, value_name = "TASK ARRAY")]
+    tasks: String,
 }
 
 #[tokio::main]
@@ -41,10 +71,18 @@ async fn main() -> Result<()> {
     env_logger::init();
     log::info!("====ZKVM-Gevulot e2e-test =======");
     let cfg = ArgConfiguration::parse();
-    let client = RpcClientBuilder::default().build(cfg.json_rpc_url)?;
+    //let client = RpcClientBuilder::default().build(cfg.json_rpc_url)?;
+
+    let mut client_builder = RpcClientBuilder::default();
+    if let Some(rpc_timeout) = args.rpc_timeout {
+        client_builder = client_builder.request_timeout(Duration::from_secs(rpc_timeout));
+    }
+    let client = client_builder
+        .build(cfg.json_rpc_url)
+        .expect("build rpc client");
   
-    let bs = std::fs::read(cfg.key_file)?;
-    let key = SecretKey::parse_slice(&bs)?;
+    //let bs = std::fs::read(cfg.key_file)?;
+    //let key = SecretKey::parse_slice(&bs)?;
 
    
 
@@ -55,10 +93,9 @@ async fn main() -> Result<()> {
     let verifier_hash = Hash::from("3032e67af5a5d4bc058515956911570417d0481183a7c753b907b11a8f97a45f");
 
     log::info!("====before proving  =======");
-    for nonce in 1..2 {
-        send_proving_task(&client, &key, nonce, &prover_hash, &verifier_hash)
-            .await
-            .expect("send proving task");
+    match run_exec_command(client, cfg.key_file, cfg.tasks, cfg.listen_addr).await {
+        Ok(tx_hash) => println!("Programs send to execution correctly. Tx hash:{tx_hash}"),
+        Err(err) => println!("An error occurs during send execution Tx :{err}"),
     }
 
     sleep(Duration::from_secs(360)).await;
