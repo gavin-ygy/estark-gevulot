@@ -1,5 +1,6 @@
 [workspace]
 members = [
-  "tests/shell-test"
+  "tests/shell-test",
+  "tests/e2e-test"
   ]
 resolver = "2"
