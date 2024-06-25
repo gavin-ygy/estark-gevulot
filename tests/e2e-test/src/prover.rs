@@ -7,7 +7,7 @@ use std::fs::File;
 use std::io::Write;
 
 //from lib.rs
-//use anyhow::Result;
+use anyhow::Result;
 use powdr::backend::BackendType;
 use powdr::number::{DegreeType, FieldElement, GoldilocksField};
 use powdr::riscv::continuations::{rust_continuations, rust_continuations_dry_run};
@@ -293,7 +293,7 @@ struct Cli {
 //use gevulot_common::WORKSPACE_PATH;
 use gevulot_shim::{Task, TaskResult};
 
-type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+//type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
 fn main()-> Result<()>  {
    gevulot_shim::run(run_task)
