@@ -5,8 +5,9 @@ use clap::{command, Parser};
 
 
 use std::time::Instant;
-use std::fs;
-
+//use std::fs;
+use std::fs::File;
+use std::io::Write;
 
 
 use gevulot_shim::{Task, TaskResult};

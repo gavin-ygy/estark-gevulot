@@ -342,12 +342,12 @@ fn run_task(task: Task) -> Result<TaskResult> {
             });
 
     let exec_result = zkvm_prove_only(
-                task,
+                &args.task_name,
                 &suite_json,
                 bi,
                 start_of_shutdown_routine,
-                i,
-                output_path,
+                &args.number_chunk,
+                &args.output_path,
             )
             .unwrap();
 
@@ -366,8 +366,8 @@ fn run_task(task: Task) -> Result<TaskResult> {
     // /workspace/lr_chunk_0/lr_proof.bin.
     // /workspace/lr_chunk_0.circom
 
-    let circom_file = Path::new(output_path).join(format!("{}_chunk_{}.circom", &args.task_name, &args.number_chunk));
-    let proof_file = Path::new(output_path).join(format!("{}_chunk_{}.circom/{}_proof.bin", &args.task_name, &args.number_chunk, &args.task_name));
+    let circom_file = Path::new(&args.output_path).join(format!("{}_chunk_{}.circom", &args.task_name, &args.number_chunk));
+    let proof_file = Path::new(&args.output_path).join(format!("{}_chunk_{}.circom/{}_proof.bin", &args.task_name, &args.number_chunk, &args.task_name));
 
      std::fs::write(proof_file, b"this is a proof a.")?;
      std::fs::write(circom_file, b"this is a circom .")?;
