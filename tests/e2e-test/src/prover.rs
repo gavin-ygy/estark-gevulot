@@ -293,13 +293,13 @@ struct Cli {
 //use gevulot_common::WORKSPACE_PATH;
 use gevulot_shim::{Task, TaskResult};
 
-//type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+type gResult<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
-fn main()-> Result<()>  {
+fn main()-> gResult<()>  {
    gevulot_shim::run(run_task)
 }
 
-fn run_task(task: Task) -> Result<TaskResult> {
+fn run_task(task: Task) -> gResult<TaskResult> {
 
     env_logger::init();
  
