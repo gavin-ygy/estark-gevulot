@@ -7,10 +7,18 @@ description = "Eigen Gevulot Test Programs"
 documentation = "https://eigen.cash"
 homepage = "https://eigen.cash"
 
+[[bin]]
+name = "prover"
+path = "src/prover.rs"
+
+[[bin]]
+name = "verifier"
+path = "src/verifier.rs"
 
 [dependencies]
 powdr  =  { git = "https://github.com/eigmax/powdr", branch = "feature-starky-avx512", default-features = false }
 starky =  { git = "https://github.com/0xEigenLabs/eigen-zkvm", branch = "main" }
+recursion =  { git = "https://github.com/0xEigenLabs/eigen-zkvm", branch = "main" }
 clap = { package = "clap", version = "4.3.4", features = ["derive"] }
 num-traits = "0.2.8"
 
