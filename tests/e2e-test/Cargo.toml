@@ -9,8 +9,8 @@ homepage = "https://eigen.cash"
 
 
 [dependencies]
-##starky = { package="starky", path = "../../eigen-zkvm/starky", version = "0.0.1" }
-starky = { git = "https://github.com/0xEigenLabs/eigen-zkvm", branch = "main" }
+powdr  =  { git = "https://github.com/eigmax/powdr", branch = "feature-starky-avx512", default-features = false }
+starky =  { git = "https://github.com/0xEigenLabs/eigen-zkvm", branch = "main" }
 clap = { package = "clap", version = "4.3.4", features = ["derive"] }
 num-traits = "0.2.8"
 
@@ -36,5 +36,14 @@ tokio = { version = "1", features = [ "full" ] }
 tokio-util = "0.7"
 ####
 
+
+thiserror = "1.0"
+serde_json = "1.0.108"
+
+
+[dev-dependencies]
+num-traits = "0.2.17"
+
 [features]
 default = []
+avx512 = ["starky/avx512", "recursion/avx512", "powdr/starky-avx512"]

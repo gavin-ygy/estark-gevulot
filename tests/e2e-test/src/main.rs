@@ -91,8 +91,8 @@ async fn main() -> Result<()> {
     //Prover hash:  e78145a32b208a22b34e03cc6a6146d35683801cc97309ab86ae3ec1f0f26d70  
     //Verifier hash:  3032e67af5a5d4bc058515956911570417d0481183a7c753b907b11a8f97a45f
 
-    let prover_hash   = Hash::from("e78145a32b208a22b34e03cc6a6146d35683801cc97309ab86ae3ec1f0f26d70");
-    let verifier_hash = Hash::from("3032e67af5a5d4bc058515956911570417d0481183a7c753b907b11a8f97a45f");
+    //let prover_hash   = Hash::from("e78145a32b208a22b34e03cc6a6146d35683801cc97309ab86ae3ec1f0f26d70");
+    //let verifier_hash = Hash::from("3032e67af5a5d4bc058515956911570417d0481183a7c753b907b11a8f97a45f");
 
     log::info!("====before proving  =======");
     match run_exec_command(client, cfg.key_file, cfg.tasks, cfg.listen_addr).await {
