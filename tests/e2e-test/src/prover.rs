@@ -1,13 +1,13 @@
 extern crate clap;
 use clap::{command, Parser};
 
-use std::fs;
+//use std::fs;
 
 use std::fs::File;
 use std::io::Write;
 
 //from lib.rs
-use anyhow::Result;
+//use anyhow::Result;
 use powdr::backend::BackendType;
 use powdr::number::{DegreeType, FieldElement, GoldilocksField};
 use powdr::riscv::continuations::{rust_continuations, rust_continuations_dry_run};

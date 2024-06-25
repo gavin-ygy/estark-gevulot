@@ -2,14 +2,13 @@ extern crate clap;
 use clap::{command, Parser};
 
 
-use starky::prove::stark_prove;
+
 
 use std::time::Instant;
 use std::fs;
 
 
 
-use gevulot_common::WORKSPACE_PATH;
 use gevulot_shim::{Task, TaskResult};
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;

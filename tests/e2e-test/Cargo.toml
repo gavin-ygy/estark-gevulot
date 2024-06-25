@@ -33,6 +33,7 @@ blake3 = { version = "1.5", features = [ "mmap" ] }
 futures-util = { version = "0.3", default-features = false }
 gevulot-node = { git = "https://github.com/gevulotnetwork/gevulot" }
 gevulot-cli   =  { git = "https://github.com/gevulotnetwork/gevulot" }
+gevulot-shim = { git = "https://github.com/gevulotnetwork/gevulot" }
 hex = "0.4"
 http-body-util = "0.1"
 hyper = { version = "1", features = ["full"] }
