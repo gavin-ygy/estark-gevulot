@@ -311,7 +311,7 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     log::info!("parameters: trace_file:{};  bootloader input file:{}",args.trace_file, args.bi_file);
     log::info!("parameters: task_name:{};  number_chunk:{}",args.task_name, args.chunk_id);
 
-    let mut log_file = fs::File::create("/tmp/workspace/test.log");
+    let mut log_file = fs::File::create("/tmp/workspace/test.log")?;
     log_file.write_all((format!("trace_file:{}; bi_file:{} ; task_name:{} ; chunk_id:{}; output_path:{} ;asm_file:{}"
     ,&args.trace_file, &args.bi_file, &args.task_name,&args.chunk_id, &args.output_path, &args.asm_file)))?;
     //write!(log_file, "trace_file:{}\n",  &args.trace_file);
@@ -349,7 +349,7 @@ fn run_task(task: Task) -> gResult<TaskResult> {
                 &suite_json,
                 bi,
                 start_of_shutdown_routine,
-                args.number_chunk,
+                args.chunk_id,
                 &args.output_path,
             );
 
@@ -368,8 +368,8 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     // /workspace/lr_chunk_0/lr_proof.bin.
     // /workspace/lr_chunk_0.circom
 
-    let circom_file = format!("{}/{}_chunk_{}.circom",&args.output_path, &args.task_name, &args.number_chunk);
-    let proof_file = format!("{}/{}_chunk_{}.circom/{}_proof.bin",&args.output_path, &args.task_name, &args.number_chunk, &args.task_name);
+    let circom_file = format!("{}/{}_chunk_{}.circom",&args.output_path, &args.task_name, &args.chunk_id);
+    let proof_file = format!("{}/{}_chunk_{}.circom/{}_proof.bin",&args.output_path, &args.task_name, &args.chunk_id, &args.task_name);
 
     // std::fs::write(proof_file, b"this is a proof a.");
     // std::fs::write(circom_file, b"this is a circom .");
