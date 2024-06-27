@@ -8,11 +8,11 @@ documentation = "https://eigen.cash"
 homepage = "https://eigen.cash"
 
 [[bin]]
-name = "prover"
+name = "e2e-prover"
 path = "src/prover.rs"
 
 [[bin]]
-name = "verifier"
+name = "e2e-verifier"
 path = "src/verifier.rs"
 
 [dependencies]
