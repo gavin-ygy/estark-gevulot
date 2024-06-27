@@ -3,8 +3,10 @@ use clap::{command, Parser};
 
 //use std::fs;
 
-use std::fs::File;
-use std::io::Write;
+//use std::fs::File;
+//use std::io::Write;
+use std::io;
+use std::io::prelude::*;
 
 //from lib.rs
 use anyhow::Result;
@@ -263,34 +265,31 @@ where
     Ok(())
 }
 
-/*
-task: &str,
-    suite_json: &String,
-    bootloader_input: Vec<GoldilocksField>,
-    start_of_shutdown_routine: u64,
-    i: usize,
-    output_path: &str,
-*/
+
 
 /////////////////////Parameter parse
 #[derive(Debug, Parser, Default)]
 #[command(about, version, no_binary_name(true))]
+//#[derive(Parser, Debug)]
+//#[command(author, version = "0.1.6", about, long_about = None)]
 struct Cli {
-    #[arg(short, long = "trace_file", default_value = "test-vectors/solidityExample.json")]
+    #[arg( long = "trace_file", default_value = "test-vectors/solidityExample.json")]
     trace_file: String,
-    #[arg(short, long = "bi_file", default_value = "lr_chunks_0.data")]
+    #[arg( long = "bi_file", default_value = "lr_chunks_0.data")]
     bi_file: String,
-    #[arg(short, long = "task_name", default_value = "lr")]
+    #[arg( long = "asm_file", default_value = "lr.asm")]
+    asm_file: String,
+    #[arg( long = "task_name", default_value = "lr")]
     task_name: String,
     #[arg(long = "number_chunk",default_value_t = 0) ]
     number_chunk: usize,
-    
-    #[arg(short, long = "output_path", default_value = "/workspace")] //must use the default value!!
+
+    #[arg(long = "output_path", default_value = "/workspace")] //must use the default value!!
     output_path: String,
-  
+
 }
 
-//use gevulot_common::WORKSPACE_PATH;
+
 use gevulot_shim::{Task, TaskResult};
 
 type gResult<T> = std::result::Result<T, Box<dyn std::error::Error>>;
@@ -301,17 +300,19 @@ fn main()-> gResult<()>  {
 
 fn run_task(task: Task) -> gResult<TaskResult> {
 
+
     env_logger::init();
- 
+
     println!("0xEigenLabs prover : task.args: {:?}", &task.args);
-    
+
+    //let args =  Cli::parse();
     let args =  Cli::parse_from(&task.args);
 
     log::info!("parameters: trace_file:{};  bootloader input file:{}",args.trace_file, args.bi_file);
     log::info!("parameters: task_name:{};  number_chunk:{}",args.task_name, args.number_chunk);
-   
-    let mut log_file = File::create("/workspace/test.log")?;
-    write!(log_file, "trace_file:{}\n",  &args.trace_file)?;
+
+    let mut log_file = File::create("/tmp/workspace/test.log");
+    write!(log_file, "trace_file:{}\n",  &args.trace_file);
     write!(log_file, "bi_file:{}\n",  &args.bi_file)?;
     write!(log_file, "task_name:{}\n",  &args.task_name)?;
     write!(log_file, "number_chunk:{}\n",  &args.number_chunk)?;
@@ -323,20 +324,20 @@ fn run_task(task: Task) -> gResult<TaskResult> {
 
     let workspace = format!("program/{}", args.task_name);
 
-    let mut fp = fs::File::open(&args.bi_file).unwrap();
+    let mut f = fs::File::open(&args.bi_file).unwrap();
     let metadata = fs::metadata(&args.bi_file).unwrap();
     let file_size = metadata.len() as usize;
-            
+
     assert!(file_size % 8 == 0);
     // read the start_of_shutdown_routine
     let mut buffer = [0u8; 8];
-    fp.read_exact(&mut buffer).unwrap();
+    f.read_exact(&mut buffer).unwrap();
     let start_of_shutdown_routine: u64 = u64::from_le_bytes(buffer);
-    
+
     let file_size = file_size - 8;
     let mut buffer = vec![0; file_size];
-    fp.read_exact(&mut buffer).unwrap();
-    let mut bi = vec![GoldilocksField::zero(); file_size / 8];
+    f.read_exact(&mut buffer).unwrap();
+    let mut bi = vec![GoldilocksField::default(); file_size / 8];
     bi.iter_mut().zip(buffer.chunks(8)).for_each(|(out, bin)| {
                 *out = GoldilocksField::from_bytes_le(bin);
             });
@@ -346,12 +347,11 @@ fn run_task(task: Task) -> gResult<TaskResult> {
                 &suite_json,
                 bi,
                 start_of_shutdown_routine,
-                &args.number_chunk,
+                args.number_chunk,
                 &args.output_path,
-            )
-            .unwrap();
+            );
 
-    
+
     match exec_result {
         Err(x) => {
             log::info!("The prover has error: {}", x);
@@ -366,11 +366,11 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     // /workspace/lr_chunk_0/lr_proof.bin.
     // /workspace/lr_chunk_0.circom
 
-    let circom_file = Path::new(&args.output_path).join(format!("{}_chunk_{}.circom", &args.task_name, &args.number_chunk));
-    let proof_file = Path::new(&args.output_path).join(format!("{}_chunk_{}.circom/{}_proof.bin", &args.task_name, &args.number_chunk, &args.task_name));
+    let circom_file = (format!("{}/{}_chunk_{}.circom",&args.output_path, &args.task_name, &args.number_chunk));
+    let proof_file = (format!("{}/{}_chunk_{}.circom/{}_proof.bin",&args.output_path, &args.task_name, &args.number_chunk, &args.task_name));
 
-     std::fs::write(proof_file, b"this is a proof a.")?;
-     std::fs::write(circom_file, b"this is a circom .")?;
+    // std::fs::write(proof_file, b"this is a proof a.");
+    // std::fs::write(circom_file, b"this is a circom .");
     //return three files for Verifier
     task.result(vec![], vec![String::from(proof_file),String::from(circom_file),String::from("/workspace/test.log")])
 
