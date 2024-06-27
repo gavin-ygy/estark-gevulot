@@ -281,8 +281,8 @@ struct Cli {
     asm_file: String,
     #[arg( long = "task_name", default_value = "lr")]
     task_name: String,
-    #[arg(long = "number_chunk",default_value_t = 0) ]
-    number_chunk: usize,
+    #[arg(long = "chunk_id",default_value_t = 0) ]
+    chunk_id: usize,
 
     #[arg(long = "output_path", default_value = "/workspace")] //must use the default value!!
     output_path: String,
@@ -309,14 +309,16 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     let args =  Cli::parse_from(&task.args);
 
     log::info!("parameters: trace_file:{};  bootloader input file:{}",args.trace_file, args.bi_file);
-    log::info!("parameters: task_name:{};  number_chunk:{}",args.task_name, args.number_chunk);
+    log::info!("parameters: task_name:{};  number_chunk:{}",args.task_name, args.chunk_id);
 
     let mut log_file = fs::File::create("/tmp/workspace/test.log");
-    write!(log_file, "trace_file:{}\n",  &args.trace_file);
-    write!(log_file, "bi_file:{}\n",  &args.bi_file)?;
-    write!(log_file, "task_name:{}\n",  &args.task_name)?;
-    write!(log_file, "number_chunk:{}\n",  &args.number_chunk)?;
-    write!(log_file, "output_path:{}\n",  &args.output_path)?;
+    log_file.write_all((format!("trace_file:{}; bi_file:{} ; task_name:{} ; chunk_id:{}; output_path:{} ;asm_file:{}"
+    ,&args.trace_file, &args.bi_file, &args.task_name,&args.chunk_id, &args.output_path, &args.asm_file)))?;
+    //write!(log_file, "trace_file:{}\n",  &args.trace_file);
+    //write!(log_file, "bi_file:{}\n",  &args.bi_file)?;
+    //write!(log_file, "task_name:{}\n",  &args.task_name)?;
+    //write!(log_file, "number_chunk:{}\n",  &args.number_chunk)?;
+    //write!(log_file, "output_path:{}\n",  &args.output_path)?;
 
 
     //generate proof
