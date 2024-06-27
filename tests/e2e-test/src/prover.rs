@@ -28,7 +28,6 @@ use std::path::Path;
 use std::time::Instant;
 
 const TEST_CHANNEL: u32 = 1;
-
 fn generate_witness_and_prove<F: FieldElement>(
     mut pipeline: Pipeline<F>,
 ) -> Result<(), Vec<String>> {
@@ -41,7 +40,7 @@ fn generate_witness_and_prove<F: FieldElement>(
     let start = Instant::now();
     log::debug!("Proving ...");
 
-    pipeline = pipeline.with_backend(BackendType::EStarkStarky);
+    pipeline = pipeline.with_backend(BackendType::EStarkStarky, Some("stark_gl".to_string()));
     pipeline.compute_proof().unwrap();
     let duration = start.elapsed();
     log::debug!("Proving took: {:?}", duration);
@@ -54,7 +53,7 @@ fn generate_verifier<F: FieldElement, W: std::io::Write>(
 ) -> Result<()> {
     let buf = Vec::new();
     let mut vw = BufWriter::new(buf);
-    pipeline = pipeline.with_backend(BackendType::EStarkStarky);
+    pipeline = pipeline.with_backend(BackendType::EStarkStarky, Some("stark_gl".to_string()));
     pipeline.export_verification_key(&mut vw).unwrap();
     log::debug!("Export verification key done");
     let mut setup: StarkSetup<MerkleTreeGL> = serde_json::from_slice(&vw.into_inner()?)?;
@@ -167,6 +166,57 @@ pub fn zkvm_execute_and_prove(task: &str, suite_json: String, output_path: &str)
     Ok(())
 }
 
+pub fn zkvm_generate_chunks(
+    workspace: &str,
+    suite_json: &String,
+    output_path: &str,
+) -> Result<Vec<(Vec<GoldilocksField>, u64)>> {
+    log::debug!("Compiling Rust...");
+    let force_overwrite = true;
+    let with_bootloader = true;
+    let (asm_file_path, asm_contents) = compile_rust::<GoldilocksField>(
+        workspace,
+        Path::new(output_path),
+        force_overwrite,
+        &Runtime::base().with_poseidon(),
+        with_bootloader,
+    )
+    .ok_or_else(|| vec!["could not compile rust".to_string()])
+    .unwrap();
+
+    let mut pipeline = Pipeline::<GoldilocksField>::default()
+        .with_output(output_path.into(), true)
+        .from_asm_string(asm_contents.clone(), Some(asm_file_path.clone()))
+        .with_prover_inputs(Default::default())
+        .add_data(TEST_CHANNEL, suite_json);
+
+    log::debug!("Running powdr-riscv executor in fast mode...");
+
+    /*
+    let (trace, _mem) = powdr::riscv_executor::execute::<GoldilocksField>(
+        &asm_contents,
+        powdr::riscv_executor::MemoryState::new(),
+        pipeline.data_callback().unwrap(),
+        &default_input(&[]),
+        powdr::riscv_executor::ExecMode::Fast,
+    );
+
+    log::debug!("Trace length: {}", trace.len);
+    */
+    log::debug!("Running powdr-riscv executor in trace mode for continuations...");
+    let start = Instant::now();
+
+    let bootloader_inputs = rust_continuations_dry_run(&mut pipeline);
+
+    let duration = start.elapsed();
+    log::debug!(
+        "Trace executor took: {:?}, input size: {:?}",
+        duration,
+        bootloader_inputs.len()
+    );
+
+    Ok(bootloader_inputs)
+}
 
 pub fn zkvm_prove_only(
     task: &str,
@@ -264,6 +314,7 @@ where
     pipeline_callback(pipeline)?;
     Ok(())
 }
+
 
 
 
