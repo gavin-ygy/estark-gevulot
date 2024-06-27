@@ -311,7 +311,7 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     log::info!("parameters: trace_file:{};  bootloader input file:{}",args.trace_file, args.bi_file);
     log::info!("parameters: task_name:{};  number_chunk:{}",args.task_name, args.number_chunk);
 
-    let mut log_file = File::create("/tmp/workspace/test.log");
+    let mut log_file = fs::File::create("/tmp/workspace/test.log");
     write!(log_file, "trace_file:{}\n",  &args.trace_file);
     write!(log_file, "bi_file:{}\n",  &args.bi_file)?;
     write!(log_file, "task_name:{}\n",  &args.task_name)?;
@@ -366,8 +366,8 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     // /workspace/lr_chunk_0/lr_proof.bin.
     // /workspace/lr_chunk_0.circom
 
-    let circom_file = (format!("{}/{}_chunk_{}.circom",&args.output_path, &args.task_name, &args.number_chunk));
-    let proof_file = (format!("{}/{}_chunk_{}.circom/{}_proof.bin",&args.output_path, &args.task_name, &args.number_chunk, &args.task_name));
+    let circom_file = format!("{}/{}_chunk_{}.circom",&args.output_path, &args.task_name, &args.number_chunk);
+    let proof_file = format!("{}/{}_chunk_{}.circom/{}_proof.bin",&args.output_path, &args.task_name, &args.number_chunk, &args.task_name);
 
     // std::fs::write(proof_file, b"this is a proof a.");
     // std::fs::write(circom_file, b"this is a circom .");
