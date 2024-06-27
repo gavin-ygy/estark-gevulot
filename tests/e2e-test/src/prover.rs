@@ -312,14 +312,14 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     log::info!("parameters: task_name:{};  number_chunk:{}",args.task_name, args.chunk_id);
 
     let mut log_file = fs::File::create("/tmp/workspace/test.log")?;
-    let content = format!("trace_file:{}; bi_file:{} ; task_name:{} ; chunk_id:{}; output_path:{} ;asm_file:{}"
-    ,&args.trace_file, &args.bi_file, &args.task_name,&args.chunk_id, &args.output_path, &args.asm_file);
-    log_file.write_all(&content)?;
-    //write!(log_file, "trace_file:{}\n",  &args.trace_file);
-    //write!(log_file, "bi_file:{}\n",  &args.bi_file)?;
-    //write!(log_file, "task_name:{}\n",  &args.task_name)?;
-    //write!(log_file, "number_chunk:{}\n",  &args.number_chunk)?;
-    //write!(log_file, "output_path:{}\n",  &args.output_path)?;
+    //let content = format!("trace_file:{}; bi_file:{} ; task_name:{} ; chunk_id:{}; output_path:{} ;asm_file:{}"
+    //,&args.trace_file, &args.bi_file, &args.task_name,&args.chunk_id, &args.output_path, &args.asm_file);
+    //log_file.write_all(&content)?;
+    write!(log_file, "trace_file:{}\n",  &args.trace_file);
+    write!(log_file, "bi_file:{}\n",  &args.bi_file)?;
+    write!(log_file, "task_name:{}\n",  &args.task_name)?;
+    write!(log_file, "number_chunk:{}\n",  &args.number_chunk)?;
+    write!(log_file, "output_path:{}\n",  &args.output_path)?;
 
 
     //generate proof
