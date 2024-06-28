@@ -428,8 +428,8 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     //#[arg(short, long = "proof_file", default_value = "/workspace/lr_chunk_0/lr_proof.bin")]
     //#[arg(short, long = "circom_file", default_value = "/workspace/lr_chunk_0.circom")]
     //return three files for Verifier
-    std::fs::write("/workspace/lr_proof.bin", b"this is a proof a.");
+    std::fs::write("/workspace/lr_chunk_0/lr_proof.bin", b"this is a proof a.");
     std::fs::write("/workspace/lr_chunk_0.circom", b"this is a circom .");
-    task.result(vec![], vec![String::from("/workspace/lr_proof.bin"),String::from("/workspace/lr_chunk_0.circom"),String::from("/workspace/test.log")])
+    task.result(vec![], vec![String::from("/workspace/lr_chunk_0/lr_proof.bin"),String::from("/workspace/lr_chunk_0.circom"),String::from("/workspace/test.log")])
 
 }
