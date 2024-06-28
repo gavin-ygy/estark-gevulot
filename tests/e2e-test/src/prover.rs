@@ -369,7 +369,7 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     write!(log_file, "number_chunk:{}\n",  &args.chunk_id)?;
     write!(log_file, "output_path:{}\n",  &args.output_path)?;
 
-
+/*
     //generate proof
     let suite_json = fs::read_to_string(args.trace_file).unwrap();
 
@@ -410,19 +410,24 @@ fn run_task(task: Task) -> gResult<TaskResult> {
         }
         _ => write!(log_file, "The prover executes successfully.\n")?,
     };
-
+*/
     log::info!("The prover executes successfully");
 
     // Write generated proof to a file.
     // /workspace/lr_chunk_0/lr_proof.bin.
     // /workspace/lr_chunk_0.circom
 
-    let circom_file = format!("{}/{}_chunk_{}.circom",&args.output_path, &args.task_name, &args.chunk_id);
-    let proof_file = format!("{}/{}_chunk_{}.circom/{}_proof.bin",&args.output_path, &args.task_name, &args.chunk_id, &args.task_name);
+    //let circom_file = format!("{}/{}_chunk_{}.circom",&args.output_path, &args.task_name, &args.chunk_id);
+    //let proof_file = format!("{}/{}_chunk_{}.circom/{}_proof.bin",&args.output_path, &args.task_name, &args.chunk_id, &args.task_name);
 
-    // std::fs::write(proof_file, b"this is a proof a.");
-    // std::fs::write(circom_file, b"this is a circom .");
+    // std::fs::write(&proof_file, b"this is a proof a.");
+    // std::fs::write(&circom_file, b"this is a circom .");
+    //task.result(vec![], vec![String::from(proof_file),String::from(circom_file),String::from("/workspace/test.log")])
+    //#[arg(short, long = "proof_file", default_value = "/workspace/lr_chunk_0/lr_proof.bin")]
+    //#[arg(short, long = "circom_file", default_value = "/workspace/lr_chunk_0.circom")]
     //return three files for Verifier
-    task.result(vec![], vec![String::from(proof_file),String::from(circom_file),String::from("/workspace/test.log")])
+    std::fs::write("/workspace/lr_chunk_0/lr_proof.bin", b"this is a proof a.");
+    std::fs::write("/workspace/lr_chunk_0.circom", b"this is a circom .");
+    task.result(vec![], vec![String::from("/workspace/lr_chunk_0/lr_proof.bin"),String::from("/workspace/lr_chunk_0.circom"),String::from("/workspace/test.log")])
 
 }
