@@ -357,7 +357,7 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     println!("0xEigenLabs prover : task.args: {:?}", &task.args);
 
     //let args =  Cli::parse();
-  /*  let args =  Cli::parse_from(&task.args);
+    let args =  Cli::parse_from(&task.args);
 
     log::info!("parameters: trace_file:{};  bootloader input file:{}",args.trace_file, args.bi_file);
     log::info!("parameters: task_name:{};  number_chunk:{}",args.task_name, args.chunk_id);
@@ -367,10 +367,9 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     write!(log_file, "bi_file:{}\n",  &args.bi_file)?;
     write!(log_file, "task_name:{}\n",  &args.task_name)?;
     write!(log_file, "number_chunk:{}\n",  &args.chunk_id)?;
-    write!(log_file, "output_path:{}\n",  &args.output_path)?;*/
+    write!(log_file, "output_path:{}\n",  &args.output_path)?;
 
-    let mut log_file = fs::File::create("/workspace/test.log")?;
-    write!(log_file, "output_path:9999999999999\n")?;
+  
 
 /*
     //generate proof
