@@ -34,12 +34,14 @@ fn run_task(task: Task) -> Result<TaskResult> {
 
     //env_logger::init();
     println!("verifier : task.args: {:?}", &task.args);
-    let args =  Cli::parse_from(&task.args);
+   // let args =  Cli::parse_from(&task.args);
    
     let mut log_file = File::create("/workspace/test_v.log")?;
     //write!(log_file, "verifier : task.args::{}\n",  &task.args)?;
-    write!(log_file, "proof file::{}\n",  &args.proof_file)?;
-    write!(log_file, "circom file::{}\n",  &args.circom_file)?;
+    //write!(log_file, "proof file::{}\n",  &args.proof_file)?;
+    //write!(log_file, "circom file::{}\n",  &args.circom_file)?;
+
+    write!(log_file, "circom file::222222222222222\n")?;
     
     //In this test, the verifier does nothing. 
 
