@@ -35,7 +35,8 @@ fn run_task(task: Task) -> Result<TaskResult> {
     //env_logger::init();
     println!("verifier : task.args: {:?}", &task.args);
    // let args =  Cli::parse_from(&task.args);
-   
+   let log_path = "/workspace/lr_chunk_0";
+   fs::create_dir_all(&log_path).unwrap();
     let mut log_file = File::create("/workspace/lr_chunk_0/test_v.log")?;
     //write!(log_file, "verifier : task.args::{}\n",  &task.args)?;
     //write!(log_file, "proof file::{}\n",  &args.proof_file)?;
