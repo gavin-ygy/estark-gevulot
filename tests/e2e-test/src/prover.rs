@@ -362,14 +362,14 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     log::info!("parameters: trace_file:{};  bootloader input file:{}",args.trace_file, args.bi_file);
     log::info!("parameters: task_name:{};  number_chunk:{}",args.task_name, args.chunk_id);
 
-    let mut log_file = fs::File::create("/tmp/workspace/test.log")?;
+    let mut log_file = fs::File::create("/workspace/test.log")?;
     write!(log_file, "trace_file:{}\n",  &args.trace_file);
     write!(log_file, "bi_file:{}\n",  &args.bi_file)?;
     write!(log_file, "task_name:{}\n",  &args.task_name)?;
     write!(log_file, "number_chunk:{}\n",  &args.chunk_id)?;
     write!(log_file, "output_path:{}\n",  &args.output_path)?;*/
 
-    let mut log_file = fs::File::create("/tmp/workspace/test.log")?;
+    let mut log_file = fs::File::create("/workspace/test.log")?;
     write!(log_file, "output_path:9999999999999\n")?;
 
 /*
