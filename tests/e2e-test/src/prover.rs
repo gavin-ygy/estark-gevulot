@@ -315,7 +315,7 @@ where
         ),
     ]);
     //test gevulot
-    std::fs::write("/workspace/test.log", b"rust_continuation():222222 \n")?;
+    std::fs::write("/workspace/test.log", b"rust_continuation():222222 \n").unwrap();
     //pipeline_callback(pipeline)?;
     Ok(())
 }
