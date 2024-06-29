@@ -239,7 +239,7 @@ pub fn zkvm_prove_only(
     let start = Instant::now();
 
     //test gevulot
-    write!("/workspace/test.log", "zkvm_prove_only():{}\n",&start)?;
+    write!("/workspace/test.log", "zkvm_prove_only():111111 \n")?;
    /*
 
     //TODO: if we clone it, we lost the information gained from this function
