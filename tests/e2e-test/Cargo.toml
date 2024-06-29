@@ -47,4 +47,5 @@ env_logger = "0.10"
 
 [features]
 default = []
-avx512 = ["starky/avx512", "recursion/avx512", "powdr/starky-avx512"]
+##avx512 = ["starky/avx512", "recursion/avx512", "powdr/starky-avx512"]
+avx512 = ["starky/avx512", "recursion/avx512"]
