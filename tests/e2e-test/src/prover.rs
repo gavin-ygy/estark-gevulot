@@ -393,6 +393,7 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     bi.iter_mut().zip(buffer.chunks(8)).for_each(|(out, bin)| {
                 *out = GoldilocksField::from_bytes_le(bin);
             });
+     write!(log_file, "start_of_shutdown_routine:{}\n",  &start_of_shutdown_routine)?;
 /*
     let exec_result = zkvm_prove_only(
                 &args.task_name,
