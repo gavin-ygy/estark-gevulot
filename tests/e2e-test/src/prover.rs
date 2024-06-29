@@ -290,9 +290,13 @@ where
     let name = format!("{}_chunk_{}", task, i);
     log::debug!("\nRunning chunk {} in {}...", i + 1, name);
 
+    //test gevulot
+    std::fs::write("/workspace/test.log", b"rust_continuation():222222 \n").unwrap();
+
     // we used to do
     //let pipeline = pipeline.with_name(name);
 
+    /*
     // now we should do
     let parent_path = pipeline.output_dir().unwrap();
     let chunk_dir = parent_path.join(name);
@@ -314,9 +318,8 @@ where
             jump_to_shutdown_routine,
         ),
     ]);
-    //test gevulot
-    std::fs::write("/workspace/test.log", b"rust_continuation():222222 \n").unwrap();
-    //pipeline_callback(pipeline)?;
+    
+    pipeline_callback(pipeline)?; */
     Ok(())
 }
 
