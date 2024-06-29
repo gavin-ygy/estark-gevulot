@@ -238,6 +238,10 @@ pub fn zkvm_prove_only(
     log::debug!("Running witness generation and proof computation...");
     let start = Instant::now();
 
+    //test gevulot
+    write!("/workspace/test.log", "zkvm_prove_only():{}\n",&start)?;
+   /*
+
     //TODO: if we clone it, we lost the information gained from this function
     rust_continuation(
         task,
@@ -262,7 +266,7 @@ pub fn zkvm_prove_only(
         "Witness generation and proof computation took: {:?}",
         duration
     );
-
+*/
     Ok(())
 }
 
@@ -394,7 +398,7 @@ fn run_task(task: Task) -> gResult<TaskResult> {
                 *out = GoldilocksField::from_bytes_le(bin);
             });
      write!(log_file, "start_of_shutdown_routine:{}\n",  &start_of_shutdown_routine)?;
-/*
+
     let exec_result = zkvm_prove_only(
                 &args.task_name,
                 &suite_json,
@@ -404,7 +408,7 @@ fn run_task(task: Task) -> gResult<TaskResult> {
                 &args.output_path,
             );
 
-
+/*
     match exec_result {
         Err(x) => {
             log::info!("The prover has error: {}", x);
@@ -430,6 +434,7 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     std::fs::write("/workspace/lr_chunk_0.circom", b"this is a circom .");
     write!(log_file, "circom out:{}\n",  &circom_file)?;
     write!(log_file, "proof out:{}\n",  &proof_file)?; 
+    //write!("/workspace/test.log", "proof out:{}\n",  )?;
     //task.result(vec![], vec![String::from("/workspace/lr_chunk_0/lr_proof.bin"),String::from("/workspace/lr_chunk_0.circom"),String::from("/workspace/test.log")])
     task.result(vec![], vec![String::from(proof_file),String::from(circom_file),String::from("/workspace/test.log")])
     
