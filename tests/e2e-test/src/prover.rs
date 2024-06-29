@@ -238,9 +238,8 @@ pub fn zkvm_prove_only(
     log::debug!("Running witness generation and proof computation...");
     let start = Instant::now();
 
-    //test gevulot
-    std::fs::write("/workspace/test.log", b"zkvm_prove_only():111111 \n")?;
-   /*
+    
+  
 
     //TODO: if we clone it, we lost the information gained from this function
     rust_continuation(
@@ -252,7 +251,7 @@ pub fn zkvm_prove_only(
         i,
     )
     .unwrap();
-
+ /*
     let verifier_file = Path::new(output_path).join(format!("{}_chunk_{}.circom", task, i));
     log::debug!(
         "Running circom verifier generation to {:?}...",
@@ -315,7 +314,9 @@ where
             jump_to_shutdown_routine,
         ),
     ]);
-    pipeline_callback(pipeline)?;
+    //test gevulot
+    std::fs::write("/workspace/test.log", b"rust_continuation():222222 \n")?;
+    //pipeline_callback(pipeline)?;
     Ok(())
 }
 
