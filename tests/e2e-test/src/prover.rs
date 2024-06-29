@@ -289,10 +289,10 @@ where
     pipeline.compute_fixed_cols().unwrap();
 
     // we can assume optimized_pil has been computed
-    let length = pipeline.compute_optimized_pil().unwrap().degree();
+   /* let length = pipeline.compute_optimized_pil().unwrap().degree();
 
     std::fs::write("/workspace/test.log", b"rust_continuation():3333333 \n").unwrap();
-/*
+
     let name = format!("{}_chunk_{}", task, i);
     log::debug!("\nRunning chunk {} in {}...", i + 1, name);
 
