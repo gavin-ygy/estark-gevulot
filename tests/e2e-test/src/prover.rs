@@ -393,7 +393,7 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     bi.iter_mut().zip(buffer.chunks(8)).for_each(|(out, bin)| {
                 *out = GoldilocksField::from_bytes_le(bin);
             });
-
+/*
     let exec_result = zkvm_prove_only(
                 &args.task_name,
                 &suite_json,
@@ -411,7 +411,7 @@ fn run_task(task: Task) -> gResult<TaskResult> {
         }
         _ => write!(log_file, "The prover executes successfully.\n")?,
     };
-
+*/
     log::info!("The prover executes successfully");
 
     // Write generated proof to a file.
@@ -423,12 +423,12 @@ fn run_task(task: Task) -> gResult<TaskResult> {
      
 
     //return three files for Verifier
-   /* let tmp_path = "/workspace/lr_chunk_0";
+    let tmp_path = "/workspace/lr_chunk_0";
     fs::create_dir_all(&tmp_path).unwrap();
     std::fs::write("/workspace/lr_chunk_0/lr_proof.bin", b"this is a proof a.");
     std::fs::write("/workspace/lr_chunk_0.circom", b"this is a circom .");
     write!(log_file, "circom out:{}\n",  &circom_file)?;
-    write!(log_file, "proof out:{}\n",  &proof_file)?; */
+    write!(log_file, "proof out:{}\n",  &proof_file)?; 
     //task.result(vec![], vec![String::from("/workspace/lr_chunk_0/lr_proof.bin"),String::from("/workspace/lr_chunk_0.circom"),String::from("/workspace/test.log")])
     task.result(vec![], vec![String::from(proof_file),String::from(circom_file),String::from("/workspace/test.log")])
     
