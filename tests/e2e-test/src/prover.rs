@@ -432,6 +432,7 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     std::fs::write("/workspace/lr_chunk_0.circom", b"this is a circom .");
     write!(log_file, "circom out:{}\n",  &circom_file)?;
     write!(log_file, "proof out:{}\n",  &proof_file)?;
-    task.result(vec![], vec![String::from("/workspace/lr_chunk_0/lr_proof.bin"),String::from("/workspace/lr_chunk_0.circom"),String::from("/workspace/test.log")])
-
+    //task.result(vec![], vec![String::from("/workspace/lr_chunk_0/lr_proof.bin"),String::from("/workspace/lr_chunk_0.circom"),String::from("/workspace/test.log")])
+    task.result(vec![], vec![String::from(proof_file),String::from(circom_file),String::from("/workspace/test.log")])
+    
 }
