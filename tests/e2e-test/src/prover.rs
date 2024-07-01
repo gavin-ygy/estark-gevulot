@@ -283,7 +283,7 @@ where
     // Here the fixed columns most likely will have been computed already,
     // in which case this will be a no-op.
     //test gevulot
-    std::fs::write("/workspace/test.log", b"rust_continuation():222222 \n").unwrap();
+   // std::fs::write("/workspace/test.log", b"rust_continuation():222222 \n").unwrap();
 
  
     pipeline.compute_fixed_cols().unwrap();
@@ -291,7 +291,7 @@ where
     // we can assume optimized_pil has been computed
    let length = pipeline.compute_optimized_pil().unwrap().degree();
 
-    std::fs::write("/workspace/test.log", b"rust_continuation():3333333 \n").unwrap();
+   // std::fs::write("/workspace/test.log", b"rust_continuation():3333333 \n").unwrap();
 
     let name = format!("{}_chunk_{}", task, i);
     log::debug!("\nRunning chunk {} in {}...", i + 1, name);
@@ -417,7 +417,7 @@ fn run_task(task: Task) -> gResult<TaskResult> {
                 &args.output_path,
             );
 
-/*
+
     match exec_result {
         Err(x) => {
             log::info!("The prover has error: {}", x);
@@ -425,7 +425,7 @@ fn run_task(task: Task) -> gResult<TaskResult> {
         }
         _ => write!(log_file, "The prover executes successfully.\n")?,
     };
-*/
+
     log::info!("The prover executes successfully");
 
     // Write generated proof to a file.
@@ -441,8 +441,8 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     fs::create_dir_all(&tmp_path).unwrap();
     std::fs::write("/workspace/lr_chunk_0/lr_proof.bin", b"this is a proof a.");
     std::fs::write("/workspace/lr_chunk_0.circom", b"this is a circom .");
-    write!(log_file, "circom out:{}\n",  &circom_file)?;
-    write!(log_file, "proof out:{}\n",  &proof_file)?; 
+    //write!(log_file, "circom out:{}\n",  &circom_file)?;
+    //write!(log_file, "proof out:{}\n",  &proof_file)?; 
     //write!("/workspace/test.log", "proof out:{}\n",  )?;
     //task.result(vec![], vec![String::from("/workspace/lr_chunk_0/lr_proof.bin"),String::from("/workspace/lr_chunk_0.circom"),String::from("/workspace/test.log")])
     task.result(vec![], vec![String::from(proof_file),String::from(circom_file),String::from("/workspace/test.log")])
