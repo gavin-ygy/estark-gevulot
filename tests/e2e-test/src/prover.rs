@@ -251,7 +251,7 @@ pub fn zkvm_prove_only(
         i,
     )
     .unwrap();
- /*
+ 
     let verifier_file = Path::new(output_path).join(format!("{}_chunk_{}.circom", task, i));
     log::debug!(
         "Running circom verifier generation to {:?}...",
@@ -265,7 +265,7 @@ pub fn zkvm_prove_only(
         "Witness generation and proof computation took: {:?}",
         duration
     );
-*/
+
     Ok(())
 }
 
@@ -287,7 +287,7 @@ where
 
  
     pipeline.compute_fixed_cols().unwrap();
-/* 
+
     // we can assume optimized_pil has been computed
    let length = pipeline.compute_optimized_pil().unwrap().degree();
 
@@ -324,7 +324,7 @@ where
         ),
     ]);
     
-    pipeline_callback(pipeline)?; */
+    pipeline_callback(pipeline)?; 
     Ok(())
 }
 
