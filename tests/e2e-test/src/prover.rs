@@ -439,8 +439,8 @@ fn run_task(task: Task) -> gResult<TaskResult> {
     //return three files for Verifier
     let tmp_path = "/workspace/lr_chunk_0";
     fs::create_dir_all(&tmp_path).unwrap();
-    std::fs::write("/workspace/lr_chunk_0/lr_proof.bin", b"this is a proof a.");
-    std::fs::write("/workspace/lr_chunk_0.circom", b"this is a circom .");
+    //std::fs::write("/workspace/lr_chunk_0/lr_proof.bin", b"this is a proof a.");
+    //std::fs::write("/workspace/lr_chunk_0.circom", b"this is a circom .");
     //write!(log_file, "circom out:{}\n",  &circom_file)?;
     //write!(log_file, "proof out:{}\n",  &proof_file)?; 
     //write!("/workspace/test.log", "proof out:{}\n",  )?;
